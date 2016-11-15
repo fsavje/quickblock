@@ -7,7 +7,12 @@ Authors@R: c(person("Fredrik", "Savje", email = "fredrik.savje@berkeley.edu", ro
 Description: Blocking in experiments with large samples.
 Depends:
     R (>= 3.2.3)
-Suggests: testthat
+Imports:
+    Rscclust
+Suggests:
+    testthat
+Remotes: fsavje/Rscclust
+NeedsCompilation: yes
 License: GPL (>= 3) + file LICENSE
 Encoding: UTF-8
 URL: https://github.com/fsavje/quickblock
