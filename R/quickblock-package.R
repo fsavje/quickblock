@@ -18,7 +18,6 @@
 # along with this program. If not, see http://www.gnu.org/licenses/
 # ==============================================================================
 
-
 #' quickblock: Quick Threshold Blocking
 #'
 #' Provides functions for constructing near-optimal threshold blockings. The
@@ -44,7 +43,10 @@
 NULL
 
 .onAttach <- function(libname, pkgname) {
-  packageStartupMessage("The `quickblock` package is under development. Please use it with caution.")
+  packageStartupMessage("Please cite the `quickblock` package as:")
+  packageStartupMessage("   Higgins, Michael J., Fredrik Sävje and Jasjeet S. Sekhon (2016),")
+  packageStartupMessage("   \"Improving massive experiments with threshold blocking\",")
+  packageStartupMessage("   Proceedings of the National Academy of Sciences 113:27, 7369--7376.")
 }
 
 ## @useDynLib quickblock, .registration = TRUE
