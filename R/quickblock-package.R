@@ -44,7 +44,7 @@ NULL
 
 .onAttach <- function(libname, pkgname) {
   packageStartupMessage("Please cite the `quickblock` package as:")
-  packageStartupMessage("   Higgins, Michael J., Fredrik Sävje and Jasjeet S. Sekhon (2016),")
+  packageStartupMessage("   Higgins, Michael J., Fredrik Savje and Jasjeet S. Sekhon (2016),")
   packageStartupMessage("   \"Improving massive experiments with threshold blocking\",")
   packageStartupMessage("   Proceedings of the National Academy of Sciences 113:27, 7369--7376.")
 }
