@@ -65,6 +65,18 @@ ensure_distances <- function(distances) {
 }
 
 
+# Ensure that `blocking` is a `scclust` object
+ensure_blocking <- function(blocking,
+                            req_length = NULL) {
+  if (!scclust::is.scclust(blocking)) {
+    new_error("`", match.call()$blocking, "` is not a valid blocking object.")
+  }
+  if (!is.null(req_length) && (length(blocking) != req_length)) {
+    new_error("`", match.call()$blocking, "` does not contain `", match.call()$req_length, "` units.")
+  }
+}
+
+
 # Ensure `caliper` is NULL or a scalar, positive, non-na, numeric
 ensure_caliper <- function(caliper) {
   if (!is.null(caliper)) {
@@ -114,4 +126,38 @@ coerce_size_constraint <- function(size_constraint,
     new_error("`", match.call()$size_constraint, "` may not be great than the number of units.")
   }
   size_constraint
+}
+
+
+# Coerce `treatments` to named integer vector
+coerce_treatment_desc <- function(treatments) {
+  if (!is.vector(treatments)) {
+    new_error("`", match.call()$treatments, "` must be vector.")
+  }
+  if (is.null(names(treatments))) {
+    tmp_treatments <- treatments
+    treatments <- rep(1L, length(tmp_treatments))
+    names(treatments) <- as.character(tmp_treatments)
+  }
+  if (anyDuplicated(names(treatments))) {
+    new_error("`", match.call()$treatments, "` may not contain duplicate names.")
+  }
+  if (!is.integer(treatments)) {
+    if (is.numeric_integer(treatments)) {
+      storage.mode(treatments) <- "integer"
+    } else {
+      new_error("`", match.call()$treatments, "` must be integer.")
+    }
+  }
+  if (any(is.na(treatments))) {
+    new_error("`", match.call()$treatments, "` may not contain NAs.")
+  }
+  if (length(treatments) <= 1L) {
+    new_error("`", match.call()$treatments, "` must contain at least two treartment conditions.")
+  }
+  if (any(treatments <= 0L)) {
+    new_error("Elements in `", match.call()$treatments, "` must be positive.")
+  }
+  list(conditions = rep(1:length(treatments), treatments),
+       names = names(treatments))
 }

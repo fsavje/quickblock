@@ -82,6 +82,26 @@ test_that("`ensure_distances` checks input.", {
 
 
 # ==============================================================================
+# ensure_blocking
+# ==============================================================================
+
+t_ensure_blocking <- function(t_blocking = qm_blocking(c("A", "A", "B", "C", "B", "C", "C", "A", "B", "B")),
+                              t_req_length = 10L) {
+  ensure_blocking(t_blocking, t_req_length)
+}
+
+test_that("`ensure_blocking` checks input.", {
+  expect_silent(t_ensure_blocking())
+  expect_silent(t_ensure_blocking(t_req_length = NULL))
+  expect_silent(t_ensure_blocking(scclust::scclust(c("A", "A", "B", "C", "B", "C", "C", "A", "B", "B"))))
+  expect_error(t_ensure_blocking(t_blocking = "a"),
+               regexp = "`t_blocking` is not a valid blocking object.")
+  expect_error(t_ensure_blocking(t_req_length = 5L),
+               regexp = "`t_blocking` does not contain `t_req_length` units.")
+})
+
+
+# ==============================================================================
 # ensure_caliper
 # ==============================================================================
 
@@ -135,4 +155,66 @@ test_that("`coerce_size_constraint` checks input.", {
 test_that("`coerce_size_constraint` coerces correctly.", {
   expect_identical(t_coerce_size_constraint(), 4L)
   expect_identical(t_coerce_size_constraint(t_size_constraint = 4.0), 4L)
+})
+
+
+# ==============================================================================
+# coerce_treatment_desc
+# ==============================================================================
+
+t_coerce_treatment_desc <- function(t_treatments) {
+  coerce_treatment_desc(t_treatments)
+}
+
+test_that("`coerce_treatment_desc` checks input.", {
+  expect_silent(t_coerce_treatment_desc(t_treatments = c("A" = 1L, "B" = 2L)))
+  expect_silent(t_coerce_treatment_desc(t_treatments = c("A" = 1.0, "B" = 2.0)))
+  expect_silent(t_coerce_treatment_desc(t_treatments = c("A" = 1L, "B" = 2L, "C" = 4L)))
+  expect_silent(t_coerce_treatment_desc(t_treatments = c("A", "B")))
+  expect_silent(t_coerce_treatment_desc(t_treatments = c("A", "B", "C")))
+  expect_silent(t_coerce_treatment_desc(t_treatments = c(1, 2)))
+  expect_silent(t_coerce_treatment_desc(t_treatments = c(TRUE, FALSE)))
+  expect_silent(t_coerce_treatment_desc(t_treatments = c(1L, 5L)))
+
+  expect_error(t_coerce_treatment_desc(t_treatments = dist(1:10)),
+               regexp = "`t_treatments` must be vector.")
+  expect_error(t_coerce_treatment_desc(t_treatments = c("A", "B", "A")),
+               regexp = "`t_treatments` may not contain duplicate names.")
+  expect_error(t_coerce_treatment_desc(t_treatments = c("A" = "1", "B" = "2")),
+               regexp = "`t_treatments` must be integer.")
+  expect_error(t_coerce_treatment_desc(t_treatments = c("A" = NA, "B" = 2L)),
+               regexp = "`t_treatments` may not contain NAs.")
+  expect_error(t_coerce_treatment_desc(t_treatments = c("B" = 2L)),
+               regexp = "`t_treatments` must contain at least two treartment conditions.")
+  expect_error(t_coerce_treatment_desc(t_treatments = c("A" = 1L, "B" = -2L)),
+               regexp = "Elements in `t_treatments` must be positive.")
+  expect_error(t_coerce_treatment_desc(t_treatments = c("A" = 0L, "B" = 2L)),
+               regexp = "Elements in `t_treatments` must be positive.")
+})
+
+test_that("`coerce_treatment_desc` coerces correctly.", {
+  expect_identical(t_coerce_treatment_desc(t_treatments = c("A" = 1L, "B" = 2L)),
+                   list(conditions = c(1L, 2L, 2L),
+                        names = c("A", "B")))
+  expect_identical(t_coerce_treatment_desc(t_treatments = c("A" = 1.0, "B" = 2.0)),
+                   list(conditions = c(1L, 2L, 2L),
+                        names = c("A", "B")))
+  expect_identical(t_coerce_treatment_desc(t_treatments = c("A" = 1L, "B" = 2L, "C" = 4L)),
+                   list(conditions = c(1L, 2L, 2L, 3L, 3L, 3L, 3L),
+                        names = c("A", "B", "C")))
+  expect_identical(t_coerce_treatment_desc(t_treatments = c("A", "B")),
+                   list(conditions = c(1L, 2L),
+                        names = c("A", "B")))
+  expect_identical(t_coerce_treatment_desc(t_treatments = c("A", "B", "C")),
+                   list(conditions = c(1L, 2L, 3L),
+                        names = c("A", "B", "C")))
+  expect_identical(t_coerce_treatment_desc(t_treatments = c(1, 2)),
+                   list(conditions = c(1L, 2L),
+                        names = c("1", "2")))
+  expect_identical(t_coerce_treatment_desc(t_treatments = c(TRUE, FALSE)),
+                   list(conditions = c(1L, 2L),
+                        names = c("TRUE", "FALSE")))
+  expect_identical(t_coerce_treatment_desc(t_treatments = c(1L, 5L)),
+                   list(conditions = c(1L, 2L),
+                        names = c("1", "5")))
 })
