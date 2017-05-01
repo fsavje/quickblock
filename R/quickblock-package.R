@@ -49,7 +49,7 @@ NULL
   packageStartupMessage("   Proceedings of the National Academy of Sciences 113:27, 7369--7376.")
 }
 
-## @useDynLib quickblock, .registration = TRUE
-#.onUnload <- function (libpath) {
-#  library.dynam.unload("quickblock", libpath)
-#}
+#' @useDynLib quickblock, .registration = TRUE
+.onUnload <- function (libpath) {
+  library.dynam.unload("quickblock", libpath)
+}
