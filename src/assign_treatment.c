@@ -20,6 +20,7 @@
 
 #include "assign_treatment.h"
 #include <stddef.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <R.h>
 #include <Rinternals.h>
