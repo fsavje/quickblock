@@ -125,7 +125,7 @@ t_sc_clustering <- function(distances = distancesEucl,
                                          primary_radius = primary_radius,
                                          secondary_radius = secondary_radius,
                                          batch_size = batch_size)
-  class(out_blocking) <- c("qm_blocking", class(out_blocking))
+  class(out_blocking) <- c("qb_blocking", class(out_blocking))
   out_blocking
 }
 

@@ -19,10 +19,10 @@
 # ==============================================================================
 
 library(quickblock)
-context("qm_blocking")
+context("qb_blocking")
 
 # ==============================================================================
-# qm_blocking
+# qb_blocking
 # ==============================================================================
 
 raw_labels <- c(0L, 0L, 1L, 2L, 1L, 2L, 2L, 0L, 1L, 1L)
@@ -31,60 +31,60 @@ raw_labelsNA <- c(0L, 0L, 1L, 2L, NA, 2L, 2L, NA, 1L, 1L)
 cl_obj_simple <- structure(raw_labels,
                            cluster_count = 3L,
                            ids = NULL,
-                           class = c("qm_blocking", "scclust"))
+                           class = c("qb_blocking", "scclust"))
 
 cl_obj_wNA <- structure(raw_labelsNA,
                         cluster_count = 3L,
                         ids = NULL,
-                        class = c("qm_blocking", "scclust"))
+                        class = c("qb_blocking", "scclust"))
 
 cl_obj_wID <- structure(raw_labels,
                         cluster_count = 3L,
                         ids = letters[1:10],
-                        class = c("qm_blocking", "scclust"))
+                        class = c("qb_blocking", "scclust"))
 
 cl_obj_wIDnNA <- structure(raw_labelsNA,
                            cluster_count = 3L,
                            ids = letters[1:10],
-                           class = c("qm_blocking", "scclust"))
+                           class = c("qb_blocking", "scclust"))
 
-test_that("`qm_blocking` returns correct output", {
-  expect_identical(qm_blocking(c("A", "A", "B", "C", "B", "C", "C", "A", "B", "B")),
+test_that("`qb_blocking` returns correct output", {
+  expect_identical(qb_blocking(c("A", "A", "B", "C", "B", "C", "C", "A", "B", "B")),
                    cl_obj_simple)
-  expect_identical(qm_blocking(c(1, 1, 2, 3, 2, 3, 3, 1, 2, 2)),
+  expect_identical(qb_blocking(c(1, 1, 2, 3, 2, 3, 3, 1, 2, 2)),
                    cl_obj_simple)
-  expect_identical(qm_blocking(c("A", "A", "B", "C", "NONE", "C", "C", "NONE", "B", "B"), "NONE"),
+  expect_identical(qb_blocking(c("A", "A", "B", "C", "NONE", "C", "C", "NONE", "B", "B"), "NONE"),
                    cl_obj_wNA)
-  expect_identical(qm_blocking(c("A", "A", "B", "C", "NONE", "C", "C", "0", "B", "B"), c("NONE", "0")),
+  expect_identical(qb_blocking(c("A", "A", "B", "C", "NONE", "C", "C", "0", "B", "B"), c("NONE", "0")),
                    cl_obj_wNA)
-  expect_identical(qm_blocking(c(1, 1, 2, 3, 0, 3, 3, 0, 2, 2), 0),
+  expect_identical(qb_blocking(c(1, 1, 2, 3, 0, 3, 3, 0, 2, 2), 0),
                    cl_obj_wNA)
-  expect_identical(qm_blocking(c("A", "A", "B", "C", "B", "C", "C", "A", "B", "B"), ids = letters[1:10]),
+  expect_identical(qb_blocking(c("A", "A", "B", "C", "B", "C", "C", "A", "B", "B"), ids = letters[1:10]),
                    cl_obj_wID)
-  expect_identical(qm_blocking(c("A", "A", "B", "C", "NONE", "C", "C", "0", "B", "B"), c("NONE", "0"), ids = letters[1:10]),
+  expect_identical(qb_blocking(c("A", "A", "B", "C", "NONE", "C", "C", "0", "B", "B"), c("NONE", "0"), ids = letters[1:10]),
                    cl_obj_wIDnNA)
 })
 
 
 # ==============================================================================
-# is.qm_blocking
+# is.qb_blocking
 # ==============================================================================
 
-test_that("`is.qm_blocking` returns correct output", {
-  expect_true(is.qm_blocking(structure(raw_labels,
+test_that("`is.qb_blocking` returns correct output", {
+  expect_true(is.qb_blocking(structure(raw_labels,
                                        cluster_count = 3L,
                                        ids = NULL,
-                                       class = c("qm_blocking", "scclust"))))
-  expect_false(is.qm_blocking(structure(raw_labels,
+                                       class = c("qb_blocking", "scclust"))))
+  expect_false(is.qb_blocking(structure(raw_labels,
                                         cluster_count = 3L,
                                         ids = NULL,
-                                        class = c("qm_blocking"))))
-  expect_false(is.qm_blocking(structure(raw_labels,
+                                        class = c("qb_blocking"))))
+  expect_false(is.qb_blocking(structure(raw_labels,
                                         cluster_count = 3L,
                                         ids = NULL,
                                         class = c("scclust"))))
-  expect_false(is.qm_blocking(structure(letters[1:10],
+  expect_false(is.qb_blocking(structure(letters[1:10],
                                         cluster_count = 3L,
                                         ids = NULL,
-                                        class = c("qm_blocking", "scclust"))))
+                                        class = c("qb_blocking", "scclust"))))
 })

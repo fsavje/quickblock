@@ -85,7 +85,7 @@ test_that("`ensure_distances` checks input.", {
 # ensure_blocking
 # ==============================================================================
 
-t_ensure_blocking <- function(t_blocking = qm_blocking(c("A", "A", "B", "C", "B", "C", "C", "A", "B", "B")),
+t_ensure_blocking <- function(t_blocking = qb_blocking(c("A", "A", "B", "C", "B", "C", "C", "A", "B", "B")),
                               t_req_length = 10L) {
   ensure_blocking(t_blocking, t_req_length)
 }

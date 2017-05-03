@@ -40,7 +40,7 @@
 #'    function.
 #'
 #' @return
-#'    Returns a \code{\link{qm_blocking}} object with the blocks.
+#'    Returns a \code{\link{qb_blocking}} object with the blocks.
 #'
 #' @seealso
 #'   See \code{\link[scclust]{sc_clustering}} for the underlying function used
@@ -132,6 +132,6 @@ quickblock <- function(distances,
 
   out_blocking <- do.call(scclust::sc_clustering, sc_call)
 
-  class(out_blocking) <- c("qm_blocking", class(out_blocking))
+  class(out_blocking) <- c("qb_blocking", class(out_blocking))
   out_blocking
 }

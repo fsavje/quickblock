@@ -25,6 +25,11 @@ context("Input checking in exported functions")
 # Shared objects
 # ==============================================================================
 
+sound_blocking <- qb_blocking(c("A", "A", "B", "C", "B", "C", "C", "A", "B", "B"))
+unsound_blocking <- letters[1:10]
+sound_treatments <- c("T", "C")
+unsound_treatments <- 1L
+
 sound_block_labels <- letters[1:10]
 unsound_block_labels <- dist(1:10)
 sound_unassigned_labels <- c("a", "c")
@@ -49,19 +54,19 @@ unsound_caliper <- "a"
 # qm_blocking
 # ==============================================================================
 
-t_qm_blocking <- function(block_labels = sound_block_labels,
+t_qb_blocking <- function(block_labels = sound_block_labels,
                           unassigned_labels = sound_unassigned_labels,
                           ids = sound_ids) {
-  qm_blocking(block_labels = block_labels,
+  qb_blocking(block_labels = block_labels,
               unassigned_labels = unassigned_labels,
               ids = ids)
 }
 
-test_that("`qm_blocking` checks input.", {
-  expect_silent(t_qm_blocking())
-  expect_error(t_qm_blocking(block_labels = unsound_block_labels))
-  expect_error(t_qm_blocking(unassigned_labels = unsound_unassigned_labels))
-  expect_error(t_qm_blocking(ids = unsound_ids))
+test_that("`qb_blocking` checks input.", {
+  expect_silent(t_qb_blocking())
+  expect_error(t_qb_blocking(block_labels = unsound_block_labels))
+  expect_error(t_qb_blocking(unassigned_labels = unsound_unassigned_labels))
+  expect_error(t_qb_blocking(ids = unsound_ids))
 })
 
 

@@ -19,14 +19,14 @@
 # ==============================================================================
 
 
-#' Constructor for qm_blocking objects
+#' Constructor for qb_blocking objects
 #'
-#' The \code{qm_blocking} function constructs a \code{qm_blocking} object from
+#' The \code{qb_blocking} function constructs a \code{qb_blocking} object from
 #' existing block labels. The function does not derive blockings from
 #' sets of data points; see \code{\link{quickblock}} for that functionality.
 #'
-#' \code{qm_blocking} objects are based on integer vectors, and it indexes
-#' the blocks starting with zero. The \code{qm_blocking} class inherits
+#' \code{qb_blocking} objects are based on integer vectors, and it indexes
+#' the blocks starting with zero. The \code{qb_blocking} class inherits
 #' from the \code{\link[scclust]{scclust}} class.
 #'
 #' @param block_labels
@@ -40,51 +40,51 @@
 #'    \code{1:length(group_labels)}.
 #'
 #' @return
-#'    Returns a \code{qm_blocking} object with the blocking described by the
+#'    Returns a \code{qb_blocking} object with the blocking described by the
 #'    provided labels.
 #'
 #' @examples
 #' # 10 units in 3 blocks
-#' blocking1 <- qm_blocking(c("A", "A", "B", "C", "B",
+#' blocking1 <- qb_blocking(c("A", "A", "B", "C", "B",
 #'                            "C", "C", "A", "B", "B"))
 #'
 #' # 8 units in 3 blocks, 2 units unassigned
-#' blocking2 <- qm_blocking(c(1, 1, 2, 3, 2,
+#' blocking2 <- qb_blocking(c(1, 1, 2, 3, 2,
 #'                            NA, 3, 1, NA, 2))
 #'
 #' # Custom labels indicating unassiged units
-#' blocking3 <- qm_blocking(c("A", "A", "B", "C", "NONE",
+#' blocking3 <- qb_blocking(c("A", "A", "B", "C", "NONE",
 #'                            "C", "C", "NONE", "B", "B"),
 #'                         unassigned_labels = "NONE")
 #'
 #' # Two different labels indicating unassiged units
-#' blocking4 <- qm_blocking(c("A", "A", "B", "C", "NONE",
+#' blocking4 <- qb_blocking(c("A", "A", "B", "C", "NONE",
 #'                            "C", "C", "0", "B", "B"),
 #'                         unassigned_labels = c("NONE", "0"))
 #'
 #' # Custom unit IDs
-#' blocking5 <- qm_blocking(c("A", "A", "B", "C", "B",
+#' blocking5 <- qb_blocking(c("A", "A", "B", "C", "B",
 #'                            "C", "C", "A", "B", "B"),
 #'                         ids = letters[1:10])
 #'
 #' @export
-qm_blocking <- function(block_labels,
+qb_blocking <- function(block_labels,
                         unassigned_labels = NULL,
                         ids = NULL) {
   out_blocking <- scclust::scclust(cluster_labels = block_labels,
                                    unassigned_labels = unassigned_labels,
                                    ids = ids)
-  class(out_blocking) <- c("qm_blocking", class(out_blocking))
+  class(out_blocking) <- c("qb_blocking", class(out_blocking))
   out_blocking
 }
 
 
-#' Check qm_blocking object
+#' Check qb_blocking object
 #'
-#' \code{is.qm_blocking} checks whether the provided object is a valid instance
-#' of the \code{\link{qm_blocking}} class.
+#' \code{is.qb_blocking} checks whether the provided object is a valid instance
+#' of the \code{\link{qb_blocking}} class.
 #'
-#' \code{is.qm_blocking} does not check whether the blocking itself is sensible
+#' \code{is.qb_blocking} does not check whether the blocking itself is sensible
 #' or whether it satisfies some set of constraints. See
 #' \code{\link[scclust]{check_clustering}} for that functionality.
 #'
@@ -92,10 +92,10 @@ qm_blocking <- function(block_labels,
 #'    object to check.
 #'
 #' @return
-#'    Returns \code{TRUE} if \code{x} is a valid \code{\link{qm_blocking}}
+#'    Returns \code{TRUE} if \code{x} is a valid \code{\link{qb_blocking}}
 #'    object, otherwise \code{FALSE}.
 #'
 #' @export
-is.qm_blocking <- function(x) {
-  inherits(x, "qm_blocking") && scclust::is.scclust(x)
+is.qb_blocking <- function(x) {
+  inherits(x, "qb_blocking") && scclust::is.scclust(x)
 }

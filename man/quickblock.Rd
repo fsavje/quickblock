@@ -24,7 +24,7 @@ covariate data, or to the underlying \code{\link[scclust]{sc_clustering}}
 function.}
 }
 \value{
-Returns a \code{\link{qm_blocking}} object with the blocks.
+Returns a \code{\link{qb_blocking}} object with the blocks.
 }
 \description{
 ...
