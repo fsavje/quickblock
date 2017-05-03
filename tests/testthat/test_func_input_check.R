@@ -51,7 +51,24 @@ unsound_caliper <- "a"
 
 
 # ==============================================================================
-# qm_blocking
+# assign_treatment
+# ==============================================================================
+
+t_assign_treatment <- function(t_blocking = sound_blocking,
+                               t_treatments = sound_treatments) {
+  assign_treatment(blocking = t_blocking,
+                   treatments = t_treatments)
+}
+
+test_that("`assign_treatment` checks input.", {
+  expect_silent(t_assign_treatment())
+  expect_error(t_assign_treatment(t_blocking = unsound_blocking))
+  expect_error(t_assign_treatment(t_treatments = unsound_treatments))
+})
+
+
+# ==============================================================================
+# qb_blocking
 # ==============================================================================
 
 t_qb_blocking <- function(block_labels = sound_block_labels,
