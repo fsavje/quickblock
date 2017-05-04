@@ -25,6 +25,6 @@
 #include <Rinternals.h>
 
 SEXP qbc_assign_treatments(SEXP R_blocking,
-                           SEXP R_treatment_conditions);
+                           SEXP R_num_treatments);
 
 #endif // ifndef QBC_ASSIGN_TREAT_HG

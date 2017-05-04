@@ -129,35 +129,22 @@ coerce_size_constraint <- function(size_constraint,
 }
 
 
-# Coerce `treatments` to named integer vector
-coerce_treatment_desc <- function(treatments) {
-  if (!is.vector(treatments)) {
-    new_error("`", match.call()$treatments, "` must be vector.")
+# Coerce `treatment_names` to character vector
+coerce_treatment_names <- function(treatment_names) {
+  if (!is.vector(treatment_names)) {
+    new_error("`", match.call()$treatment_names, "` must be vector.")
   }
-  if (is.null(names(treatments))) {
-    tmp_treatments <- treatments
-    treatments <- rep(1L, length(tmp_treatments))
-    names(treatments) <- as.character(tmp_treatments)
+  if (!is.character(treatment_names)) {
+    treatment_names <- as.character(treatment_names)
   }
-  if (anyDuplicated(names(treatments))) {
-    new_error("`", match.call()$treatments, "` may not contain duplicate names.")
+  if (anyDuplicated(treatment_names)) {
+    new_error("`", match.call()$treatment_names, "` may not contain duplicates.")
   }
-  if (!is.integer(treatments)) {
-    if (is.numeric_integer(treatments)) {
-      storage.mode(treatments) <- "integer"
-    } else {
-      new_error("`", match.call()$treatments, "` must be integer.")
-    }
+  if (any(is.na(treatment_names))) {
+    new_error("`", match.call()$treatment_names, "` may not contain NAs.")
   }
-  if (any(is.na(treatments))) {
-    new_error("`", match.call()$treatments, "` may not contain NAs.")
+  if (length(treatment_names) <= 1L) {
+    new_error("`", match.call()$treatment_names, "` must contain at least two treartments.")
   }
-  if (length(treatments) <= 1L) {
-    new_error("`", match.call()$treatments, "` must contain at least two treartment conditions.")
-  }
-  if (any(treatments <= 0L)) {
-    new_error("Elements in `", match.call()$treatments, "` must be positive.")
-  }
-  list(conditions = rep(1:length(treatments), treatments),
-       names = names(treatments))
+  treatment_names
 }

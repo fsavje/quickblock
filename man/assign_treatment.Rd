@@ -10,39 +10,50 @@ assign_treatment(blocking, treatments = c("Treated", "Control"))
 \item{blocking}{\code{\link{qb_blocking}} or \code{\link[scclust]{scclust}} object with
 the blocked units.}
 
-\item{treatments}{vector with treatment conditions. If unnamed vector, elements in the
-vector indicates treatment conditions that will be assigned in equal
-proportions within each block. If named integer vector, the element
-names indicate treatment conditions which will be assigned in the
-proportions indicated by the values. See below for details.}
+\item{treatments}{character vector with treatment conditions.}
 }
 \value{
 Returns a factor with the assigned treatments.
 }
 \description{
 Provided a blocking and treatment conditions, \code{assign_treatment} randomly
-assigns treatments to the units in the sample so to best maintain the desired
-proportion of treatments within each block.
+assigns treatments to the units in the sample so to best maintain the equal
+proportions of conditions within each block.
 }
 \details{
-Units not assigned to blocks will not be assigned treatments.
+When the number of treatment conditions evenly divides the size of a block,
+the conditions will be repeated that many times within the block. For example,
+with three conditions, \code{c("T1", "T2", "C")}, and a block with six units,
+two random units will be assigned to each of the conditions.
+
+When the number of treatment conditions does not evenly divide the block size,
+the conditions are repeated up to the closest multiple lower than the block
+size and the remaining conditions are chosen at random. For example, with the
+three conditions from above and a block with four units, each condition will be
+repeated once (since \code{floor(4/3) == 1}). One additional condition is needed
+to assign all units in the block, and that condition is selected at random from
+\code{c("T1", "T2", "C")} with equal probability. In a block with 8 units, each
+condition will be repeated twice (\code{floor(8/3) == 2}). Two additional
+conditions are now needed, and they are choosen from \code{c("T1", "T2", "C")}
+without replacement.
+
+In all cases, the treatment conditions within a block are shuffled so that all
+units have the same probability of being assigned to each condition. Units not
+assigned to blocks will not be assigned treatments (indicated by \code{NA}).
 }
 \examples{
 # Example blocking
 my_blocking <- qb_blocking(c("A", "A", "B", "C", "B",
                              "C", "C", "A", "B", "B"))
 
-# Two treatment conditions in equal propositions
+# Two treatment conditions
 assign_treatment(my_blocking)
 
-# Two treatment conditions in with twice as many controls as treated
-assign_treatment(my_blocking, c("Treated" = 1, "Control" = 2))
-
-# Three treatment conditions in equal propositions
+# Three treatment conditions
 assign_treatment(my_blocking, c("T1", "T2", "C"))
 
-# Four treatment conditions in equal propositions
-# This gives a warning because some blocks have less than four units
+# Four treatment conditions -- This throws warning because some blocks
+# contain less than four units
 \dontrun{assign_treatment(my_blocking, c("T1", "T2", "T3", "C"))}
 
 }

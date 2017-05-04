@@ -49,7 +49,7 @@ static inline void shuffle(int* array,
 // =============================================================================
 
 SEXP qbc_assign_treatments(const SEXP R_blocking,
-                           const SEXP R_treatment_conditions)
+                           const SEXP R_num_treatments)
 {
 	if (!isInteger(R_blocking)) {
 		iqbc_error("`R_blocking` must be integer.");
@@ -60,10 +60,10 @@ SEXP qbc_assign_treatments(const SEXP R_blocking,
 	if (asInteger(getAttrib(R_blocking, install("cluster_count"))) <= 0) {
 		iqbc_error("`R_blocking` is empty.");
 	}
-	if (!isInteger(R_treatment_conditions)) {
-		iqbc_error("`R_treatment_conditions` must be integer.");
+	if (!isInteger(R_num_treatments)) {
+		iqbc_error("`R_num_treatments` must be integer.");
 	}
-	if (xlength(R_treatment_conditions) < 2) {
+	if (asInteger(R_num_treatments) < 2) {
 		iqbc_error("Must be at least two treatment conditions.");
 	}
 
@@ -71,8 +71,7 @@ SEXP qbc_assign_treatments(const SEXP R_blocking,
 	const size_t num_observations = (size_t) xlength(R_blocking);
 	const uint32_t num_blocks = (uint32_t) asInteger(getAttrib(R_blocking, install("cluster_count")));
 	const int* const blocking = INTEGER(R_blocking);
-	const uint32_t num_treatment_conditions = (uint32_t) xlength(R_treatment_conditions);
-	const int* const treatment_conditions = INTEGER(R_treatment_conditions);
+	const uint32_t num_treatments = (uint32_t) asInteger(R_num_treatments);
 
 	// Bounds and sanity checks
 	{
@@ -90,7 +89,7 @@ SEXP qbc_assign_treatments(const SEXP R_blocking,
 
 	// Allocate working memory
 	uint32_t* const block_size = calloc(num_blocks, sizeof(uint32_t));
-	int* const extra_scratch = malloc(sizeof(int[num_treatment_conditions]));
+	int* const extra_scratch = malloc(sizeof(int[num_treatments]));
 	int* const treatment_scratch = malloc(sizeof(int[num_observations]));
 	int** const block_treatments = malloc(sizeof(int*[num_blocks]));
 
@@ -118,22 +117,22 @@ SEXP qbc_assign_treatments(const SEXP R_blocking,
 	for (uint32_t b = 0; b < num_blocks; ++b) {
 		const uint32_t b_size = block_size[b];
 		if (b_size > 0) {
-			size_block_warning += (b_size < num_treatment_conditions);
+			size_block_warning += (b_size < num_treatments);
 			block_treatments[b] = treatment_pointer;
-			const uint32_t num_extra = b_size % num_treatment_conditions;
+			const uint32_t num_extra = b_size % num_treatments;
 			const uint32_t closest_multiple = b_size - num_extra;
 			iqbc_assert(closest_multiple + num_extra == b_size);
-			iqbc_assert(num_treatment_conditions * (b_size / num_treatment_conditions) == closest_multiple);
+			iqbc_assert(num_treatments * (b_size / num_treatments) == closest_multiple);
 
-			for (uint32_t i = 0; i < closest_multiple; ++i, ++treatment_pointer) {
-				*treatment_pointer = treatment_conditions[i % num_treatment_conditions];
+			for (int i = 0; i < closest_multiple; ++i, ++treatment_pointer) {
+				*treatment_pointer = (i % num_treatments) + 1;
 			}
 
 			if (num_extra > 0) {
-				for (uint32_t i = 0; i < num_treatment_conditions; ++i) {
-					extra_scratch[i] = treatment_conditions[i];
+				for (int i = 0; i < num_treatments; ++i) {
+					extra_scratch[i] = i + 1;
 				}
-				shuffle(extra_scratch, num_treatment_conditions, num_extra);
+				shuffle(extra_scratch, num_treatments, num_extra);
 				for (uint32_t i = 0; i < num_extra; ++i, ++treatment_pointer) {
 					*treatment_pointer = extra_scratch[i];
 				}

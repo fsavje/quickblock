@@ -26,10 +26,8 @@ context("Input checking in C code")
 # ==============================================================================
 
 t_qbc_assign_treatments <- function(blocking = qb_blocking(c("A", "A", "B", "C", "B", "C", "C", "A", "B", "B", "C")),
-                                    treatment_conditions = c(1L, 2L)) {
-  .Call(qbc_assign_treatments,
-        blocking,
-        treatment_conditions)
+                                    num_treatments = 2L) {
+  .Call(qbc_assign_treatments, blocking, num_treatments)
 }
 
 test_that("`qbc_assign_treatments` checks input.", {
@@ -40,14 +38,14 @@ test_that("`qbc_assign_treatments` checks input.", {
                regexp = "`R_blocking` is not valid `scclust` object.")
   expect_error(t_qbc_assign_treatments(blocking = structure(1:11, "cluster_count" = 0L, class = c("qb_blocking", "scclust"))),
                regexp = "`R_blocking` is empty.")
-  expect_error(t_qbc_assign_treatments(treatment_conditions = letters[1:2]),
-               regexp = "`R_treatment_conditions` must be integer.")
-  expect_error(t_qbc_assign_treatments(treatment_conditions = 1L),
+  expect_error(t_qbc_assign_treatments(num_treatments = "a"),
+               regexp = "`R_num_treatments` must be integer.")
+  expect_error(t_qbc_assign_treatments(num_treatments = 1L),
                regexp = "Must be at least two treatment conditions.")
   expect_error(t_qbc_assign_treatments(blocking = structure(c(0L, 1L, 1L, 0L, 2L), "cluster_count" = 2L, class = c("qb_blocking", "scclust"))),
                regexp = "Blocking out of bounds.")
   expect_error(t_qbc_assign_treatments(blocking = structure(c(0L, 1L, -1L, 0L, 1L), "cluster_count" = 2L, class = c("qb_blocking", "scclust"))),
                regexp = "Blocking out of bounds.")
-  expect_warning(t_qbc_assign_treatments(treatment_conditions = c(1L, 2L, 3L, 4L)),
-               regexp = "Some blocks contain less units than the number of treatment conditions.")
+  expect_warning(t_qbc_assign_treatments(num_treatments = 4L),
+                 regexp = "Some blocks contain less units than the number of treatment conditions.")
 })
