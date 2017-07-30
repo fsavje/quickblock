@@ -41,6 +41,15 @@
 #' \code{\link[scclust]{sc_clustering}} function (which is the default
 #' behavior).
 #'
+#' The main algorithm used to constructing the blocking will might produce
+#' some blocks that are much larger than the minimum size constraint.  If
+#' \code{break_large_blocks} is \code{TRUE}, all blocks larger than twice of
+#' \code{size_constraint} will broken into two or more smaller blocks. The new
+#' blocks will still satisfy the size constraint. In general, large blocks are
+#' produced when units are highly clustered, so breaking up the blocks will often
+#' only award small improvements. The blocks are broken using the
+#' \code{\link[scclust]{hierarchical_clustering}} function.
+#'
 #'@param distances
 #'    \code{\link[distances]{distances}} object or a numeric vector, matrix
 #'    or data frame. The parameter describes the similarity of the units to be
@@ -50,6 +59,8 @@
 #'    otherwise specified.
 #' @param size_constraint
 #'    integer with the required minimum number of units in each block.
+#' @param break_large_blocks
+#'    logical indicating whether large blocks should be broken up.
 #' @param caliper
 #'    restrict the maximum within-block distance.
 #' @param ...
@@ -97,6 +108,7 @@
 quickblock <- function(distances,
                        size_constraint = 2L,
                        caliper = NULL,
+                       break_large_blocks = FALSE,
                        ...) {
   dots <- eval(substitute(alist(...)))
 
@@ -149,6 +161,13 @@ quickblock <- function(distances,
   sc_call$type_constraints <- NULL
 
   out_blocking <- do.call(scclust::sc_clustering, sc_call)
+
+  if (break_large_blocks) {
+    out_blocking <- scclust::hierarchical_clustering(distances = distances,
+                                                     size_constraint = size_constraint,
+                                                     batch_assign = TRUE,
+                                                     existing_clustering = out_blocking)
+  }
 
   class(out_blocking) <- c("qb_blocking", class(out_blocking))
   out_blocking

@@ -112,7 +112,8 @@ t_sc_clustering <- function(distances = distancesEucl,
                             seed_radius = NULL,
                             primary_radius = "seed_radius",
                             secondary_radius = "estimated_radius",
-                            batch_size = 100L) {
+                            batch_size = 100L,
+                            break_large_blocks = FALSE) {
   out_blocking <- scclust::sc_clustering(distances = distances,
                                          size_constraint = size_constraint,
                                          type_labels = NULL,
@@ -125,6 +126,9 @@ t_sc_clustering <- function(distances = distancesEucl,
                                          primary_radius = primary_radius,
                                          secondary_radius = secondary_radius,
                                          batch_size = batch_size)
+  if (break_large_blocks) {
+    out_blocking <- scclust::hierarchical_clustering(distances, size_constraint, TRUE, out_blocking)
+  }
   class(out_blocking) <- c("qb_blocking", class(out_blocking))
   out_blocking
 }
@@ -133,6 +137,8 @@ t_sc_clustering <- function(distances = distancesEucl,
 test_that("`quickblock` returns correct output", {
   expect_identical(t_quickblock(),
                    t_sc_clustering())
+  expect_identical(t_quickblock(break_large_blocks = TRUE),
+                   t_sc_clustering(break_large_blocks = TRUE))
   expect_identical(t_quickblock(distances = distancesEucl),
                    t_sc_clustering(distances = distancesEucl))
   expect_identical(t_quickblock(distances = distancesMaha),
@@ -144,6 +150,8 @@ test_that("`quickblock` returns correct output", {
 
   expect_identical(t_quickblock(size_constraint = 4L),
                    t_sc_clustering(size_constraint = 4L))
+  expect_identical(t_quickblock(size_constraint = 4L, break_large_blocks = TRUE),
+                   t_sc_clustering(size_constraint = 4L, break_large_blocks = TRUE))
 
   expect_identical(t_quickblock(caliper = 1.0),
                    t_sc_clustering(seed_radius = 0.5))
