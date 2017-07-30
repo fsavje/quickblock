@@ -147,8 +147,7 @@ coerce_size_constraint <- function(size_constraint,
 
 # Coerce `treatments` to factor
 coerce_treatments <- function(treatments,
-                              req_length = NULL,
-                              check_NA = TRUE) {
+                              req_length = NULL) {
   if (!is.factor(treatments)) {
     if (!is.vector(treatments)) {
       new_error("Do not know how to coerce `", match.call()$treatments, "` to factor.")
@@ -160,9 +159,6 @@ coerce_treatments <- function(treatments,
   }
   if (nlevels(treatments) < 2L) {
     new_error("`", match.call()$treatments, "` must contain at least two treatment conditions.")
-  }
-  if (check_NA && any(is.na(treatments))) {
-    new_error("`", match.call()$treatments, "` may not contain NAs.")
   }
   if (!is.null(req_length) && (length(treatments) != req_length)) {
     new_error("Length of `", match.call()$treatments, "` is incorrect.")

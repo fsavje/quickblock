@@ -189,9 +189,8 @@ test_that("`coerce_size_constraint` coerces correctly.", {
 # ==============================================================================
 
 t_coerce_treatments <- function(t_treatments = 1:10,
-                                t_req_length = 10L,
-                                t_check_NA = TRUE) {
-  coerce_treatments(t_treatments, t_req_length, t_check_NA)
+                                t_req_length = 10L) {
+  coerce_treatments(t_treatments, t_req_length)
 }
 
 test_that("`coerce_treatments` checks input.", {
@@ -199,7 +198,7 @@ test_that("`coerce_treatments` checks input.", {
   expect_silent(t_coerce_treatments(t_treatments = factor(letters[1:10])))
   expect_silent(t_coerce_treatments(t_treatments = letters[1:10]))
   expect_silent(t_coerce_treatments(t_treatments = rep(c(TRUE, FALSE), 5L)))
-  expect_silent(t_coerce_treatments(t_treatments = c("A", "B", "A", NA, "B", "A", "B", "A", NA, "B"), t_check_NA = FALSE))
+  expect_silent(t_coerce_treatments(t_treatments = c("A", "B", "A", NA, "B", "A", "B", "A", NA, "B")))
   expect_silent(t_coerce_treatments(t_req_length = NULL))
   expect_warning(t_coerce_treatments(t_treatments = as.numeric(1:10)),
                  regexp = "Coercing `t_treatments` to factor.")
@@ -209,8 +208,6 @@ test_that("`coerce_treatments` checks input.", {
                regexp = "`t_treatments` must contain at least two treatment conditions.")
   expect_error(t_coerce_treatments(t_req_length = 5L),
                regexp = "Length of `t_treatments` is incorrect.")
-  expect_error(t_coerce_treatments(t_treatments = c("A", "B", "A", NA, "B", "A", "B", "A", NA, "B")),
-               regexp = "`t_treatments` may not contain NAs.")
 })
 
 test_that("`coerce_treatments` coerces correctly.", {
@@ -224,7 +221,7 @@ test_that("`coerce_treatments` coerces correctly.", {
                    factor(1:10))
   expect_identical(t_coerce_treatments(t_treatments = rep(c(TRUE, FALSE), 5L)),
                    factor(rep(c(TRUE, FALSE), 5L)))
-  expect_identical(t_coerce_treatments(t_treatments = c("A", "B", "A", NA, "B", "A", "B", "A", NA, "B"), t_check_NA = FALSE),
+  expect_identical(t_coerce_treatments(t_treatments = c("A", "B", "A", NA, "B", "A", "B", "A", NA, "B")),
                    factor(c("A", "B", "A", NA, "B", "A", "B", "A", NA, "B")))
   expect_warning(expect_identical(t_coerce_treatments(t_treatments = as.numeric(1:10)),
                                   factor(1:10)))

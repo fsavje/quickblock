@@ -75,6 +75,7 @@ SEXP qbc_est_potential_outcomes(const SEXP R_outcomes,
 	const uint32_t num_treatments = (uint32_t) asInteger(R_num_treatments);
 	const int* const blocking = INTEGER(R_blocking);
 
+
 	// Bounds and sanity checks
 	{
 		uint32_t treatments_bc = 0;
@@ -112,6 +113,10 @@ SEXP qbc_est_potential_outcomes(const SEXP R_outcomes,
 
 	double* const est_means = REAL(R_est_means);
 	double* const est_vars = REAL(R_est_vars);
+	for (size_t t = 0; t < num_treatments; ++t) {
+		est_means[t] = 0;
+		est_vars[t] = 0;
+	}
 
 
 	// Allocate working memory
@@ -167,6 +172,7 @@ SEXP qbc_est_potential_outcomes(const SEXP R_outcomes,
 		}
 	}
 
+
 	// Calculate estimators
 	uint32_t unbalanced_assignments = 0;
 	const double n = (double) num_blocked_units;
@@ -218,6 +224,7 @@ SEXP qbc_est_potential_outcomes(const SEXP R_outcomes,
 			est_vars[t] = NA_REAL;
 		}
 	}
+
 
 	free(block_size);
 	free(treatment_count);
