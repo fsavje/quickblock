@@ -2,7 +2,7 @@
  * quickblock -- Quick Threshold Blocking
  * https://github.com/fsavje/quickblock
  *
- * Copyright (C) 2017  Fredrik Savje -- http://fredriksavje.com
+ * Copyright (C) 2017  Fredrik Savje, Jasjeet Sekhon, Michael Higgins
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
