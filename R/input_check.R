@@ -57,14 +57,6 @@ is.numeric_integer <- function(x) {
 # Ensure functions
 # ==============================================================================
 
-# Ensure that `distances` is `distances` object
-ensure_distances <- function(distances) {
-  if (!distances::is.distances(distances)) {
-    new_error("`", match.call()$distances, "` is not a `distances` object.")
-  }
-}
-
-
 # Ensure that `blocking` is a `scclust` object
 ensure_blocking <- function(blocking,
                             req_length = NULL) {
@@ -96,9 +88,33 @@ ensure_caliper <- function(caliper) {
 }
 
 
+# Ensure that `distances` is `distances` object
+ensure_distances <- function(distances) {
+  if (!distances::is.distances(distances)) {
+    new_error("`", match.call()$distances, "` is not a `distances` object.")
+  }
+}
+
+
 # ==============================================================================
 # Coerce functions
 # ==============================================================================
+
+# Coerce `x` to double
+coerce_double <- function(x, req_length = NULL) {
+  if (!is.double(x)) {
+    if (is.numeric(x)) {
+      x <- as.double(x)
+    } else {
+      new_error("`", match.call()$x, "` is not numeric.")
+    }
+  }
+  if (!is.null(req_length) && (length(x) != req_length)) {
+    new_error("`", match.call()$x, "` is not of length `", match.call()$req_length, "`.")
+  }
+  x
+}
+
 
 # Coerce `size_constraint` to scalar, non-NA integer with default as `sum(type_constraints)`
 coerce_size_constraint <- function(size_constraint,
@@ -126,6 +142,32 @@ coerce_size_constraint <- function(size_constraint,
     new_error("`", match.call()$size_constraint, "` may not be great than the number of units.")
   }
   size_constraint
+}
+
+
+# Coerce `treatments` to factor
+coerce_treatments <- function(treatments,
+                              req_length = NULL,
+                              check_NA = TRUE) {
+  if (!is.factor(treatments)) {
+    if (!is.vector(treatments)) {
+      new_error("Do not know how to coerce `", match.call()$treatments, "` to factor.")
+    }
+    if (!is.integer(treatments) && !is.logical(treatments) && !is.character(treatments)) {
+      new_warning("Coercing `", match.call()$treatments, "` to factor.")
+    }
+    treatments <- as.factor(treatments)
+  }
+  if (nlevels(treatments) < 2L) {
+    new_error("`", match.call()$treatments, "` must contain at least two treatment conditions.")
+  }
+  if (check_NA && any(is.na(treatments))) {
+    new_error("`", match.call()$treatments, "` may not contain NAs.")
+  }
+  if (!is.null(req_length) && (length(treatments) != req_length)) {
+    new_error("Length of `", match.call()$treatments, "` is incorrect.")
+  }
+  treatments
 }
 
 

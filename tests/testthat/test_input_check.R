@@ -67,21 +67,6 @@ test_that("`is.numeric_integer` makes correct output.", {
 
 
 # ==============================================================================
-# ensure_distances
-# ==============================================================================
-
-t_ensure_distances <- function(t_distances = distances::distances(matrix(1:10, nrow = 5))) {
-  ensure_distances(t_distances)
-}
-
-test_that("`ensure_distances` checks input.", {
-  expect_silent(t_ensure_distances())
-  expect_error(t_ensure_distances(t_distances = "a"),
-               regexp = "`t_distances` is not a `distances` object.")
-})
-
-
-# ==============================================================================
 # ensure_blocking
 # ==============================================================================
 
@@ -125,6 +110,47 @@ test_that("`ensure_caliper` checks input.", {
 
 
 # ==============================================================================
+# ensure_distances
+# ==============================================================================
+
+t_ensure_distances <- function(t_distances = distances::distances(matrix(1:10, nrow = 5))) {
+  ensure_distances(t_distances)
+}
+
+test_that("`ensure_distances` checks input.", {
+  expect_silent(t_ensure_distances())
+  expect_error(t_ensure_distances(t_distances = "a"),
+               regexp = "`t_distances` is not a `distances` object.")
+})
+
+
+# ==============================================================================
+# coerce_double
+# ==============================================================================
+
+t_coerce_double <- function(t_x = 1:10,
+                            t_req_length = NULL) {
+  coerce_double(t_x, t_req_length)
+}
+
+test_that("`coerce_double` checks input.", {
+  expect_silent(t_coerce_double())
+  expect_silent(t_coerce_double(t_x = as.numeric(1:10)))
+  expect_silent(t_coerce_double(t_req_length = 10))
+  expect_error(t_coerce_double(t_x = letters[1:10]),
+               regexp = "`t_x` is not numeric.")
+  expect_error(t_coerce_double(t_req_length = 8),
+               regexp = "`t_x` is not of length `t_req_length`.")
+})
+
+test_that("`coerce_double` coerces correctly.", {
+  expect_identical(t_coerce_double(), as.numeric(1:10))
+  expect_identical(t_coerce_double(t_x = as.numeric(1:10)), as.numeric(1:10))
+  expect_identical(t_coerce_double(t_req_length = 10), as.numeric(1:10))
+})
+
+
+# ==============================================================================
 # coerce_size_constraint
 # ==============================================================================
 
@@ -155,6 +181,53 @@ test_that("`coerce_size_constraint` checks input.", {
 test_that("`coerce_size_constraint` coerces correctly.", {
   expect_identical(t_coerce_size_constraint(), 4L)
   expect_identical(t_coerce_size_constraint(t_size_constraint = 4.0), 4L)
+})
+
+
+# ==============================================================================
+# coerce_treatments
+# ==============================================================================
+
+t_coerce_treatments <- function(t_treatments = 1:10,
+                                t_req_length = 10L,
+                                t_check_NA = TRUE) {
+  coerce_treatments(t_treatments, t_req_length, t_check_NA)
+}
+
+test_that("`coerce_treatments` checks input.", {
+  expect_silent(t_coerce_treatments())
+  expect_silent(t_coerce_treatments(t_treatments = factor(letters[1:10])))
+  expect_silent(t_coerce_treatments(t_treatments = letters[1:10]))
+  expect_silent(t_coerce_treatments(t_treatments = rep(c(TRUE, FALSE), 5L)))
+  expect_silent(t_coerce_treatments(t_treatments = c("A", "B", "A", NA, "B", "A", "B", "A", NA, "B"), t_check_NA = FALSE))
+  expect_silent(t_coerce_treatments(t_req_length = NULL))
+  expect_warning(t_coerce_treatments(t_treatments = as.numeric(1:10)),
+                 regexp = "Coercing `t_treatments` to factor.")
+  expect_error(t_coerce_treatments(t_treatments = dist(1:10)),
+               regexp = "Do not know how to coerce `t_treatments` to factor.")
+  expect_error(t_coerce_treatments(t_treatments = rep("A", 10L)),
+               regexp = "`t_treatments` must contain at least two treatment conditions.")
+  expect_error(t_coerce_treatments(t_req_length = 5L),
+               regexp = "Length of `t_treatments` is incorrect.")
+  expect_error(t_coerce_treatments(t_treatments = c("A", "B", "A", NA, "B", "A", "B", "A", NA, "B")),
+               regexp = "`t_treatments` may not contain NAs.")
+})
+
+test_that("`coerce_treatments` coerces correctly.", {
+  expect_identical(t_coerce_treatments(),
+                   factor(1:10))
+  expect_identical(t_coerce_treatments(t_treatments = factor(letters[1:10])),
+                   factor(letters[1:10]))
+  expect_identical(t_coerce_treatments(t_treatments = letters[1:10]),
+                   factor(letters[1:10]))
+  expect_identical(t_coerce_treatments(t_req_length = NULL),
+                   factor(1:10))
+  expect_identical(t_coerce_treatments(t_treatments = rep(c(TRUE, FALSE), 5L)),
+                   factor(rep(c(TRUE, FALSE), 5L)))
+  expect_identical(t_coerce_treatments(t_treatments = c("A", "B", "A", NA, "B", "A", "B", "A", NA, "B"), t_check_NA = FALSE),
+                   factor(c("A", "B", "A", NA, "B", "A", "B", "A", NA, "B")))
+  expect_warning(expect_identical(t_coerce_treatments(t_treatments = as.numeric(1:10)),
+                                  factor(1:10)))
 })
 
 
