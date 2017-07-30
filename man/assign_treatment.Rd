@@ -24,7 +24,7 @@ proportions of conditions within each block.
 When the number of treatment conditions evenly divides the size of a block,
 the conditions will be repeated that many times within the block. For example,
 with three conditions, \code{c("T1", "T2", "C")}, and a block with six units,
-two random units will be assigned to each of the conditions.
+two units will be assigned to each condition.
 
 When the number of treatment conditions does not evenly divide the block size,
 the conditions are repeated up to the closest multiple lower than the block
@@ -52,8 +52,8 @@ assign_treatment(my_blocking)
 # Three treatment conditions
 assign_treatment(my_blocking, c("T1", "T2", "C"))
 
-# Four treatment conditions -- This throws warning because some blocks
-# contain less than four units
+# Four treatment conditions
+# (This throws warning because some blocks contain less than four units)
 \dontrun{assign_treatment(my_blocking, c("T1", "T2", "T3", "C"))}
 
 }

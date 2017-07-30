@@ -8,26 +8,45 @@ quickblock(distances, size_constraint = 2L, caliper = NULL, ...)
 }
 \arguments{
 \item{distances}{\code{\link[distances]{distances}} object or a numeric vector, matrix
-or data frame. The argument describes the similarity of the units to be
-blocked. It can either be preprocessed distance information from a
-\code{\link[distances]{distances}} object (recommended), or raw
-covariate data. When called with covariate data, Euclidean distances are
-calculated unless otherwise specified.}
+or data frame. The parameter describes the similarity of the units to be
+blocked. It can either be preprocessed distance information using a
+\code{\link[distances]{distances}} object, or raw covariate data. When
+called with covariate data, Euclidean distances are calculated unless
+otherwise specified.}
 
-\item{size_constraint}{integer with the required number of units in each block.}
+\item{size_constraint}{integer with the required minimum number of units in each block.}
 
 \item{caliper}{restrict the maximum within-block distance.}
 
-\item{...}{additional parameters to be sent either to the
-\code{\link[distances]{distances}} function when \code{distances} contains
-covariate data, or to the underlying \code{\link[scclust]{sc_clustering}}
-function.}
+\item{...}{additional parameters to be sent either to the \code{\link[distances]{distances}}
+function when the \code{distances} parameter contains covariate data, or
+to the underlying \code{\link[scclust]{sc_clustering}} function.}
 }
 \value{
 Returns a \code{\link{qb_blocking}} object with the blocks.
 }
 \description{
-...
+\code{quickblock} constructs near-optimal threshold blockings. The function
+expects the user to provide distances measuring the similarity of
+units and a required minimum block size. It then constructs a blocking
+so that units assigned to the same block are as similar as possible while
+satisfying the minimum block size.
+}
+\details{
+The \code{caliper} parameter constrains the maximum distance between units
+assigned to the same block. This is implemented by restricting the
+edge weight in the graph used to construct the matched groups (see
+\code{\link[scclust]{sc_clustering}} for details). As a result, the caliper
+will affect all blocks and, in general, make it harder for
+the function to find good matches even for blocks where the caliper is not
+binding. In particular, a too tight \code{caliper} can lead to discarded
+units that otherwise would be assigned to a block satisfying both the
+matching constraints and the caliper. For this reason, it is recommended
+to set the \code{caliper} value quite high and only use it to avoid particularly
+poor blocks. It strongly recommended to use the \code{caliper} parameter only
+when \code{primary_unassigned_method = "closest_seed"} in the underlying
+\code{\link[scclust]{sc_clustering}} function (which is the default
+behavior).
 }
 \examples{
 # Construct example data
@@ -55,9 +74,9 @@ quickblock(my_data[c("x1", "x2")], normalize = "mahalanobize")
 }
 \references{
 Higgins, Michael J., Fredrik Sävje and Jasjeet S. Sekhon (2016),
-\sQuote{Improving massive experiments with threshold blocking},
-\emph{Proceedings of the National Academy of Sciences}, \bold{113:27}, 7369--7376.
-\url{http://www.pnas.org/lookup/doi/10.1073/pnas.1510504113}
+   \sQuote{Improving massive experiments with threshold blocking},
+   \emph{Proceedings of the National Academy of Sciences}, \bold{113:27}, 7369--7376.
+   \url{http://www.pnas.org/lookup/doi/10.1073/pnas.1510504113}
 }
 \seealso{
 See \code{\link[scclust]{sc_clustering}} for the underlying function used

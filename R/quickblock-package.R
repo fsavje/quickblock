@@ -31,10 +31,10 @@
 #' here: \url{https://github.com/fsavje/quickblock/issues}.
 #'
 #' @references
-#' Higgins, Michael J., Fredrik Sävje and Jasjeet S. Sekhon (2016),
-#' \sQuote{Improving massive experiments with threshold blocking},
-#' \emph{Proceedings of the National Academy of Sciences}, \bold{113:27}, 7369--7376.
-#' \url{http://www.pnas.org/lookup/doi/10.1073/pnas.1510504113}
+#'    Higgins, Michael J., Fredrik Sävje and Jasjeet S. Sekhon (2016),
+#'    \sQuote{Improving massive experiments with threshold blocking},
+#'    \emph{Proceedings of the National Academy of Sciences}, \bold{113:27}, 7369--7376.
+#'    \url{http://www.pnas.org/lookup/doi/10.1073/pnas.1510504113}
 #'
 #' @docType package
 #' @name quickblock-package
