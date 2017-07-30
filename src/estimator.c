@@ -147,9 +147,10 @@ SEXP qbc_est_potential_outcomes(const SEXP R_outcomes,
 
 
 	// Check so sufficient units in blocks
-	uint64_t block_treat_one = 0;
+	bool estimate_var = true;
 	{
 		uint64_t block_treat_zero = 0;
+		uint64_t block_treat_one = 0;
 		for (size_t b = 1; b < num_blocks; ++b) {
 			for (size_t t = 0; t < num_treatments; ++t) {
 				const size_t array_index = b * num_treatments + t;
@@ -160,11 +161,14 @@ SEXP qbc_est_potential_outcomes(const SEXP R_outcomes,
 		if (block_treat_zero != 0) {
 			iqbc_error("All treatments must be respresented in each block.");
 		}
+		if (block_treat_one != 0) {
+			estimate_var = false;
+			warning("Variance estimation requires that all blocks contain at least two units assigned to each treatment condition.");
+		}
 	}
 
-
 	// Calculate estimators
-	const bool estimate_var = (block_treat_one == 0);
+	uint32_t unbalanced_assignments = 0;
 	const double n = (double) num_blocked_units;
 	const double r = (double) num_treatments;
 	for (size_t b = 1; b < num_blocks; ++b) {
@@ -172,6 +176,7 @@ SEXP qbc_est_potential_outcomes(const SEXP R_outcomes,
 		if (n_c_int > 0) {
 			const uint32_t z_c_int = n_c_int % num_treatments;
 			iqbc_assert(n_c_int - z_c_int > 0);
+			const uint32_t min_treated = (n_c_int - z_c_int) / num_treatments; // floor(n_c / r)
 			const double n_c = (double) n_c_int;
 			const double z_c = (double) z_c_int;
 			const double mean_weight = n_c / n;
@@ -185,8 +190,10 @@ SEXP qbc_est_potential_outcomes(const SEXP R_outcomes,
 
 			for (size_t t = 0; t < num_treatments; ++t) {
 				const size_t array_index = b * num_treatments + t;
-				iqbc_assert(treatment_count[array_index] > 0);
-				const double num_treated_c = (double) treatment_count[array_index];
+				const uint32_t num_treated_c_int = treatment_count[array_index];
+				iqbc_assert(num_treated_c_int > 0);
+				unbalanced_assignments += (num_treated_c_int != min_treated) * (num_treated_c_int != (min_treated + 1));
+				const double num_treated_c = (double) num_treated_c_int;
 				const double mu_c = outcome_sum[array_index] / num_treated_c;
 				// sigma in note = ((n_c - 1) / n_c) * sigma_c
 				const double sigma_c = (outcome_sq_sum[array_index] - num_treated_c * mu_c * mu_c) / (num_treated_c - estimate_var);
@@ -197,12 +204,16 @@ SEXP qbc_est_potential_outcomes(const SEXP R_outcomes,
 		}
 	}
 
+	if (unbalanced_assignments != 0) {
+		estimate_var = false;
+		warning("Treatment assignment is unbalanced, variance cannot be estimated.");
+	}
+
 	if (estimate_var) {
 		for (size_t t = 0; t < num_treatments; ++t) {
 			est_vars[t] /= n;
 		}
 	} else {
-		warning("Variance estimation requires that all blocks contain at least two units assigned to each treatment condition.");
 		for (size_t t = 0; t < num_treatments; ++t) {
 			est_vars[t] = NA_REAL;
 		}

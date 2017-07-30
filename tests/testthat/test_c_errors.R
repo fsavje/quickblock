@@ -98,4 +98,7 @@ test_that("`qbc_est_potential_outcomes` checks input.", {
                regexp = "All treatments must be respresented in each block.")
   expect_warning(t_qbc_est_potential_outcomes(treatments = c(rep(1:2, 3L), rep(1L, 4L))),
                  regexp = "Variance estimation requires that all blocks contain at least two units assigned to each treatment condition.")
+  expect_warning(t_qbc_est_potential_outcomes(blocking = qb_blocking(c("A", "A", "A", "A", "B", "B", "B", "B", "B", "B")),
+                                              treatments = c(1L, 1L, 2L, 2L, 1L, 1L, 1L, 1L, 2L, 2L)),
+                 regexp = "Treatment assignment is unbalanced, variance cannot be estimated.")
 })
