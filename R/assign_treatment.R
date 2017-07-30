@@ -20,9 +20,9 @@
 
 #' Random treatment assignment with blocks
 #'
-#' Provided a blocking and treatment conditions, \code{assign_treatment} randomly
-#' assigns treatments to the units in the sample so to best maintain the equal
-#' proportions of conditions within each block.
+#' \code{assign_treatment} randomly assigns treatments to the units in the sample
+#' so to best maintain the equal proportions of conditions within each block. The
+#' function expects the user to provide a blocking object and treatment conditions.
 #'
 #' When the number of treatment conditions evenly divides the size of a block,
 #' the conditions will be repeated that many times within the block. For example,
@@ -37,7 +37,7 @@
 #' to assign all units in the block, and that condition is selected at random from
 #' \code{c("T1", "T2", "C")} with equal probability. In a block with 8 units, each
 #' condition will be repeated twice (\code{floor(8/3) == 2}). Two additional
-#' conditions are now needed, and they are choosen from \code{c("T1", "T2", "C")}
+#' conditions are now needed, and they are chosen from \code{c("T1", "T2", "C")}
 #' without replacement.
 #'
 #' In all cases, the treatment conditions within a block are shuffled so that all

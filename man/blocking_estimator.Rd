@@ -15,7 +15,7 @@ the block assignments.}
 \item{treatments}{factor specifying the units' treatment assignments.}
 }
 \value{
-A list with two numeric matrices with all estimated treatment effects and
+A list with two numeric matrices with estimated treatment effects and
    their estimated variances is returned. The first matrix (\code{effects})
    contains estimated treatment effects. Rows in this matrix indicate minuends
    in the treatment effect contrast and columns indicate subtrahends. For
@@ -35,8 +35,8 @@ A list with two numeric matrices with all estimated treatment effects and
 }
 \description{
 \code{blocking_estimator} estimates treatment effects in blocked experiments.
-The function expects the user to provide the outcomes, a blocking object,
-and treatment indicators. It returns point estimates of the sample average
+The function expects the user to provide the outcomes, a blocking object
+and treatment assignments. It returns point estimates of sample average
 treatment effects and variance estimates.
 }
 \details{
@@ -46,7 +46,8 @@ estimation, it requires that each block contains at least two units assigned to
 each condition. When treatments have been assigned with the
 \code{\link{assign_treatment}} function (or an equivalent procedure), the
 variance estimators are conservative in expectation (see the referenced
-note below for details).
+note below for details). If treatment is assigned with another method, the
+estimator might not be valid.
 
 The function estimates treatment effects by aggregating block-level
 effect estimates. It estimates effects within each block by taking the difference
@@ -57,10 +58,10 @@ In detail, let \eqn{n_b} be the number of units assigned to block \eqn{b}, and
 average outcome for units assigned to treatment \eqn{t} in block \eqn{b}. The
 effect of treatment \eqn{t} versus treatment \eqn{s} is then estimated as:
 
-\deqn{\sum\frac{n_b}{n}[Y(t, b) - Y(t, b)],}
+\deqn{\sum\frac{n_b}{n}[Y(t, b) - Y(s, b)],}
 
 where the sum is taken over the blocks in the experiment. See the referenced note
-below for more details.
+for more details.
 }
 \examples{
 # Example blocking

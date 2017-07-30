@@ -52,12 +52,12 @@
 #' blocking2 <- qb_blocking(c(1, 1, 2, 3, 2,
 #'                            NA, 3, 1, NA, 2))
 #'
-#' # Custom labels indicating unassiged units
+#' # Custom labels indicating unassigned units
 #' blocking3 <- qb_blocking(c("A", "A", "B", "C", "NONE",
 #'                            "C", "C", "NONE", "B", "B"),
 #'                         unassigned_labels = "NONE")
 #'
-#' # Two different labels indicating unassiged units
+#' # Two different labels indicating unassigned units
 #' blocking4 <- qb_blocking(c("A", "A", "B", "C", "NONE",
 #'                            "C", "C", "0", "B", "B"),
 #'                         unassigned_labels = c("NONE", "0"))

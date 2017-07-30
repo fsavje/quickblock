@@ -4,7 +4,7 @@ Title: Quick Threshold Blocking
 Version: 0.1.0
 Date: 2017-07-30
 Authors@R: c(
-    person("Fredrik", "Savje", email = "fredrik.savje@berkeley.edu", role = c("aut", "cre")),
+    person("Fredrik", "Savje", email = "fredrik.savje@yale.edu", role = c("aut", "cre")),
     person("Jasjeet", "Sekhon", role = "aut"),
     person("Michael", "Higgins", role = "aut"))
 Description:

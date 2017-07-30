@@ -28,7 +28,7 @@
 #'
 #' The \code{caliper} parameter constrains the maximum distance between units
 #' assigned to the same block. This is implemented by restricting the
-#' edge weight in the graph used to construct the matched groups (see
+#' edge weight in the graph used to construct the blocks (see
 #' \code{\link[scclust]{sc_clustering}} for details). As a result, the caliper
 #' will affect all blocks and, in general, make it harder for
 #' the function to find good matches even for blocks where the caliper is not
@@ -41,14 +41,15 @@
 #' \code{\link[scclust]{sc_clustering}} function (which is the default
 #' behavior).
 #'
-#' The main algorithm used to constructing the blocking will might produce
-#' some blocks that are much larger than the minimum size constraint.  If
-#' \code{break_large_blocks} is \code{TRUE}, all blocks larger than twice of
-#' \code{size_constraint} will broken into two or more smaller blocks. The new
-#' blocks will still satisfy the size constraint. In general, large blocks are
-#' produced when units are highly clustered, so breaking up the blocks will often
-#' only award small improvements. The blocks are broken using the
-#' \code{\link[scclust]{hierarchical_clustering}} function.
+#' The main algorithm used to construct the blocking may produce
+#' some blocks that are much larger than the minimum size constraint. If
+#' \code{break_large_blocks} is \code{TRUE}, all blocks twice as large as
+#' \code{size_constraint} will be broken into two or more smaller blocks. Block
+#' are broken so to ensure that the new blocks satisfy the size constraint.
+#' In general, large blocks are produced when units are highly clustered,
+#' so breaking up large blocks will often only lead to small improvements. The
+#' blocks are broken using the \code{\link[scclust]{hierarchical_clustering}}
+#' function.
 #'
 #'@param distances
 #'    \code{\link[distances]{distances}} object or a numeric vector, matrix
@@ -60,7 +61,7 @@
 #' @param size_constraint
 #'    integer with the required minimum number of units in each block.
 #' @param break_large_blocks
-#'    logical indicating whether large blocks should be broken up.
+#'    logical indicating whether large blocks should be broken up into smaller blocks.
 #' @param caliper
 #'    restrict the maximum within-block distance.
 #' @param ...
@@ -69,7 +70,7 @@
 #'    to the underlying \code{\link[scclust]{sc_clustering}} function.
 #'
 #' @return
-#'    Returns a \code{\link{qb_blocking}} object with the blocks.
+#'    Returns a \code{\link{qb_blocking}} object with the constructed blocks.
 #'
 #' @seealso
 #'   See \code{\link[scclust]{sc_clustering}} for the underlying function used
@@ -97,6 +98,9 @@
 #'
 #' # Impose caliper
 #' quickblock(my_distances, caliper = 0.2)
+#'
+#' # Break large block
+#' quickblock(my_distances, break_large_blocks = TRUE)
 #'
 #' # Call `quickblock` directly with covariate data (ie., not pre-calculating distances)
 #' quickblock(my_data[c("x1", "x2")])
