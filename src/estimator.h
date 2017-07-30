@@ -18,17 +18,15 @@
  * along with this program. If not, see http://www.gnu.org/licenses/
  * ========================================================================== */
 
-#include <R_ext/Rdynload.h>
-#include "assign_treatment.h"
-#include "estimator.h"
+#ifndef QBC_ESTIMATOR_HG
+#define QBC_ESTIMATOR_HG
 
-static const R_CallMethodDef callMethods[] = {
-	{"qbc_assign_treatments",       (DL_FUNC) &qbc_assign_treatments,       2},
-	{"qbc_est_potential_outcomes",  (DL_FUNC) &qbc_est_potential_outcomes,  4},
-	{NULL,                          NULL,                                   0}
-};
+#include <R.h>
+#include <Rinternals.h>
 
-void R_init_quickblock(DllInfo *info) {
-	R_registerRoutines(info, NULL, callMethods, NULL, NULL);
-	R_useDynamicSymbols(info, FALSE);
-}
+SEXP qbc_est_potential_outcomes(SEXP R_outcomes,
+                                SEXP R_blocking,
+                                SEXP R_treatments,
+                                SEXP R_num_treatments);
+
+#endif // ifndef QBC_ESTIMATOR_HG

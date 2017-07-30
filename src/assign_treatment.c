@@ -69,7 +69,8 @@ SEXP qbc_assign_treatments(const SEXP R_blocking,
 
 	// R objects to C
 	const size_t num_observations = (size_t) xlength(R_blocking);
-	const uint32_t num_blocks = (uint32_t) asInteger(getAttrib(R_blocking, install("cluster_count")));
+	// unblocked units in group 0, the rest `block ID + 1`
+	const uint32_t num_blocks = (uint32_t) asInteger(getAttrib(R_blocking, install("cluster_count"))) + 1;
 	const int* const blocking = INTEGER(R_blocking);
 	const uint32_t num_treatments = (uint32_t) asInteger(R_num_treatments);
 
@@ -77,7 +78,7 @@ SEXP qbc_assign_treatments(const SEXP R_blocking,
 	{
 		uint32_t blocking_bc = 0;
 		for (size_t i = 0; i < num_observations; ++i) {
-			blocking_bc += (blocking[i] != NA_INTEGER) * ((blocking[i] < 0) + (blocking[i] >= num_blocks));
+			blocking_bc += (blocking[i] != NA_INTEGER) * ((blocking[i] < 0) + ((blocking[i] + 1) >= num_blocks));
 		}
 		if (blocking_bc != 0) {
 			iqbc_error("Blocking out of bounds.");
@@ -105,16 +106,14 @@ SEXP qbc_assign_treatments(const SEXP R_blocking,
 	}
 
 	for (size_t i = 0; i < num_observations; ++i) {
-		if (blocking[i] != NA_INTEGER) {
-			++block_size[blocking[i]];
-		}
+		++block_size[(blocking[i] != NA_INTEGER) * (blocking[i] + 1)];
 	}
 
 	GetRNGstate();
 
 	int* treatment_pointer = treatment_scratch;
 	uint32_t size_block_warning = 0;
-	for (uint32_t b = 0; b < num_blocks; ++b) {
+	for (uint32_t b = 1; b < num_blocks; ++b) {
 		const uint32_t b_size = block_size[b];
 		if (b_size > 0) {
 			size_block_warning += (b_size < num_treatments);
@@ -147,15 +146,15 @@ SEXP qbc_assign_treatments(const SEXP R_blocking,
 	PutRNGstate();
 
 	if (size_block_warning > 0) {
-		warning("Some blocks contain less units than the number of treatment conditions.");
+		warning("Some blocks contain fewer units than the number of treatment conditions.");
 	}
 
 	for (size_t i = 0; i < num_observations; ++i) {
 		if (blocking[i] == NA_INTEGER) {
 			treatment_assignment[i] = NA_INTEGER;
 		} else {
-			treatment_assignment[i] = *block_treatments[blocking[i]];
-			++block_treatments[blocking[i]];
+			treatment_assignment[i] = *block_treatments[blocking[i] + 1];
+			++block_treatments[blocking[i] + 1];
 		}
 	}
 

@@ -49,6 +49,13 @@ unsound_size_constraint <- 100L
 sound_caliper <- NULL
 unsound_caliper <- "a"
 
+sound_outcomes <- 1:10
+unsound_outcomes <- letters[1:10]
+sound_blocking2 <- qb_blocking(c("A", "A", "A", "A", "B", "B", "B", "A", "B", "B"))
+unsound_blocking2 <- letters[1:10]
+sound_as_treatments <- rep(1:2, 5)
+unsound_as_treatments <- rep("A", 10)
+
 
 # ==============================================================================
 # assign_treatment
@@ -64,6 +71,26 @@ test_that("`assign_treatment` checks input.", {
   expect_silent(t_assign_treatment())
   expect_error(t_assign_treatment(t_blocking = unsound_blocking))
   expect_error(t_assign_treatment(t_treatments = unsound_treatments))
+})
+
+
+# ==============================================================================
+# blocking_estimator
+# ==============================================================================
+
+t_blocking_estimator <- function(t_outcomes = sound_outcomes,
+                                 t_blocking = sound_blocking2,
+                                 t_treatments = sound_as_treatments) {
+  blocking_estimator(outcomes = t_outcomes,
+                     blocking = t_blocking,
+                     treatments = t_treatments)
+}
+
+test_that("`blocking_estimator` checks input.", {
+  expect_silent(t_assign_treatment())
+  expect_error(t_assign_treatment(t_outcomes = unsound_outcomes))
+  expect_error(t_assign_treatment(t_blocking = unsound_blocking2))
+  expect_error(t_assign_treatment(t_treatments = unsound_as_treatments))
 })
 
 
