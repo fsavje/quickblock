@@ -8,9 +8,18 @@
 `quickblock` provides functions for constructing near-optimal threshold blockings. The package is made with large data sets in mind and derives blockings more than an order of magnitude quicker than other methods.
 
 
-## Install quickblock
+## How to install
 
-`quickblock` is currently under development and is not yet available on CRAN. The development version and its dependencies can be installed with [devtools](https://github.com/hadley/devtools) using the following code:
+`quickblock` is on CRAN and can be installed by running:
+
+```R
+install.packages("quickblock")
+```
+
+
+## How to install development version
+
+It is recommended to use the stable CRAN version, but the latest development version can be installed directly from Github using [devtools](https://github.com/hadley/devtools):
 
 ```R
 if (!require("devtools")) install.packages("devtools")
@@ -20,7 +29,7 @@ devtools::install_github("fsavje/quickblock")
 The package contains compiled code, and you must have a development environment to install the development version. (Use `devtools::has_devel()` to check whether you do.) If no development environment exists, Windows users download and install [Rtools](https://cran.r-project.org/bin/windows/Rtools/) and macOS users download and install [Xcode](https://itunes.apple.com/us/app/xcode/id497799835).
 
 
-## Example
+## Example on how to use quickblock
 
 ```R
 # Load package
