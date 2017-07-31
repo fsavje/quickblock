@@ -5,7 +5,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/kvewap50vohivud8/branch/master?svg=true)](https://ci.appveyor.com/project/fsavje/quickblock/branch/master)
 [![codecov](https://codecov.io/gh/fsavje/quickblock/branch/master/graph/badge.svg)](https://codecov.io/gh/fsavje/quickblock)
 
-`quickblock` provides functions for constructing near-optimal threshold blockings. The package is made with large data sets in mind and derives blockings more than an order of magnitude quicker than other methods.
+`quickblock` provides functions for assigning treatments in randomized experiments using near-optimal threshold blocking. The package is made with large data sets in mind and derives blocks more than an order of magnitude quicker than other methods.
 
 
 ## How to install

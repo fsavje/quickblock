@@ -10,8 +10,8 @@ Authors@R: c(
 Description:
     Provides functions for assigning treatments in randomized experiments using
     near-optimal threshold blocking. The package is made with large data sets in
-    mind and derives blockings more than an order of magnitude quicker than
-    other methods.
+    mind and derives blocks more than an order of magnitude quicker than other
+    methods.
 Depends:
     R (>= 3.2.3),
     distances

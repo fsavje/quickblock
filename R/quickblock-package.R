@@ -20,9 +20,10 @@
 
 #' quickblock: Quick Threshold Blocking
 #'
-#' Provides functions for constructing near-optimal threshold blockings. The
-#' package is made with large data sets in mind and derives blockings more than
-#' an order of magnitude quicker than other methods.
+#' Provides functions for assigning treatments in randomized experiments using
+#' near-optimal threshold blocking. The package is made with large data sets in
+#' mind and derives blocks more than an order of magnitude quicker than other
+#' methods.
 #'
 #' See \code{\link{quickblock}} for the main blocking function.
 #'
