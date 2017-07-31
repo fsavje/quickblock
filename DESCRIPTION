@@ -8,9 +8,10 @@ Authors@R: c(
     person("Jasjeet", "Sekhon", role = "aut"),
     person("Michael", "Higgins", role = "aut"))
 Description:
-    Provides functions for constructing near-optimal threshold blockings. The
-    package is made with large data sets in mind and derives blockings more than
-    an order of magnitude quicker than other methods.
+    Provides functions for assigning treatments in randomized experiments using
+    near-optimal threshold blocking. The package is made with large data sets in
+    mind and derives blockings more than an order of magnitude quicker than
+    other methods.
 Depends:
     R (>= 3.2.3),
     distances
