@@ -1,8 +1,8 @@
 Package: quickblock
 Type: Package
 Title: Quick Threshold Blocking
-Version: 0.1.0
-Date: 2017-07-30
+Version: 0.1.1
+Date: 2018-07-21
 Authors@R: c(
     person("Fredrik", "Savje", email = "fredrik.savje@yale.edu", role = c("aut", "cre")),
     person("Jasjeet", "Sekhon", role = "aut"),
@@ -13,7 +13,7 @@ Description:
     mind and derives blocks more than an order of magnitude quicker than other
     methods.
 Depends:
-    R (>= 3.2.3),
+    R (>= 3.4.0),
     distances
 Imports:
     scclust
