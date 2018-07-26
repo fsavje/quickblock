@@ -144,7 +144,9 @@ SEXP qbc_est_potential_outcomes(const SEXP R_outcomes,
 		num_blocked_units += unit_blocked;
 		const size_t block_index = unit_blocked * (blocking[i] + 1);
 		++block_size[block_index];
-		const size_t array_index = block_index * num_treatments + (treatments[i] != NA_INTEGER) * (treatments[i] - 1);
+		// This avoids the interger overflow from `(treatments[i] != NA_INTEGER) * (treatments[i] - 1)`
+		const size_t treatment_index = (treatments[i] != NA_INTEGER) * treatments[i] - (treatments[i] != NA_INTEGER);
+		const size_t array_index = block_index * num_treatments + treatment_index;
 		++treatment_count[array_index];
 		outcome_sum[array_index] += outcomes[i];
 		outcome_sq_sum[array_index] += outcomes[i] * outcomes[i];

@@ -1,3 +1,8 @@
+## Submit comment
+
+Resubmit of v0.1.1. Fixes integer overflow as directed by Dr. Ligges.
+
+
 ## Test environments
 
   * x86_64-apple-darwin15.6.0 (local machine)
