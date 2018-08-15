@@ -42,7 +42,7 @@ my_data <- data.frame(x1 = runif(100),
 # Make distances to be used when making blocking
 my_distances <- distances(my_data, dist_variables = c("x1", "x2"))
 
-# Make blocking with at least two units in each block
+# Make blocking with at least four units in each block
 my_blocking <- quickblock(my_distances, size_constraint = 4L)
 
 # Two treatment conditions
