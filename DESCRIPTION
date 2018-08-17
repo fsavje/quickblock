@@ -1,8 +1,8 @@
 Package: quickblock
 Type: Package
 Title: Quick Threshold Blocking
-Version: 0.1.1
-Date: 2018-07-26
+Version: 0.1.1.9000
+Date: 2018-08-17
 Authors@R: c(
     person("Fredrik", "Savje", email = "fredrik.savje@yale.edu", role = c("aut", "cre")),
     person("Jasjeet", "Sekhon", role = "aut"),
