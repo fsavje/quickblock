@@ -1,8 +1,3 @@
-## Submit comment
-
-Resubmit of v0.1.1. Fixes integer overflow as directed by Dr. Ligges.
-
-
 ## Test environments
 
   * x86_64-apple-darwin15.6.0 (local machine)
@@ -13,7 +8,7 @@ Resubmit of v0.1.1. Fixes integer overflow as directed by Dr. Ligges.
 
   * x86_64-pc-linux-gnu (travis-ci)
      - 3.4.0, 3.4.1, 3.4.2, 3.4.3, 3.4.4, 3.5.0,
-       devel
+       3.5.1, devel
 
   * x86_64-w64-mingw32/x64 (appveyor)
      - 3.4.0, 3.4.1, 3.4.2, 3.4.3, 3.4.4, 3.5.0,
@@ -25,13 +20,13 @@ Resubmit of v0.1.1. Fixes integer overflow as directed by Dr. Ligges.
 
 ## R CMD check results
 
-	* No ERRORs
+  * No ERRORs
 
-	* No WARNINGs.
+  * No WARNINGs.
 
-	* No NOTEs.
+  * No NOTEs.
 
 
 ## Downstream dependencies
 
-	* There are currently no downstream dependencies for this package.
+  * There are currently no downstream dependencies for this package.
