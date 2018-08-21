@@ -1,7 +1,7 @@
 Package: quickblock
 Type: Package
 Title: Quick Threshold Blocking
-Version: 0.2.0
+Version: 0.2.0.9000
 Date: 2018-08-21
 Authors@R: c(
     person("Fredrik", "Savje", email = "fredrik.savje@yale.edu", role = c("aut", "cre")),
@@ -16,7 +16,7 @@ Depends:
     R (>= 3.4.0),
     distances
 Imports:
-    scclust
+    scclust (>= 0.1.2.9000)
 Suggests:
     testthat
 NeedsCompilation: yes
