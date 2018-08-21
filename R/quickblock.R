@@ -2,7 +2,7 @@
 # quickblock -- Quick Threshold Blocking
 # https://github.com/fsavje/quickblock
 #
-# Copyright (C) 2017  Fredrik Savje, Jasjeet Sekhon, Michael Higgins
+# Copyright (C) 2018  Fredrik Savje, Jasjeet Sekhon, Michael Higgins
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -50,6 +50,23 @@
 #' so breaking up large blocks will often only lead to small improvements. The
 #' blocks are broken using the \code{\link[scclust]{hierarchical_clustering}}
 #' function.
+#'
+#' \code{quickblock} calls \code{\link[scclust]{sc_clustering}} with
+#' \code{seed_method = "inwards_updating"}. The \code{seed_method} parameter
+#' governs how the seeds are selected in the nearest neighborhood graph that
+#' is used to construct the blocks (see \code{\link[scclust]{sc_clustering}}
+#' for details). The \code{"inwards_updating"} option generally works well
+#' and is safe with most datasets. Using \code{seed_method = "exclusion_updating"}
+#' often leads to better performance (in the sense of blocks with more
+#' similar units), but it may increase run time. Discrete data (or more generally
+#' when units tend to be at equal distance to many other units) will lead to
+#' particularly poor run time with this option. If the dataset has at least one
+#' continuous covariate, \code{"exclusion_updating"} is typically quick. A third
+#' option is \code{seed_method = "lexical"}, which decreases the run time relative
+#' to \code{"inwards_updating"} (sometimes considerably) at the cost of performance.
+#' \code{quickblock} passes parameters on to \code{\link[scclust]{sc_clustering}},
+#' so to change \code{seed_method}, call \code{quickblock} with the parameter
+#' specified as usual: \code{quickblock(..., seed_method = "exclusion_updating")}.
 #'
 #'@param distances
 #'    \code{\link[distances]{distances}} object or a numeric vector, matrix
@@ -136,6 +153,9 @@ quickblock <- function(distances,
     stop("`type_constraints` is ignored, please use the `scclust` package instead.")
   }
 
+  if (is.null(sc_call$seed_method)) {
+    sc_call$seed_method <- "inwards_updating"
+  }
   if (is.null(sc_call$primary_unassigned_method)) {
     sc_call$primary_unassigned_method <- "closest_seed"
   }
@@ -164,13 +184,24 @@ quickblock <- function(distances,
   sc_call$type_labels <- NULL
   sc_call$type_constraints <- NULL
 
-  out_blocking <- do.call(scclust::sc_clustering, sc_call)
+
+  out_blocking <- tryCatch({
+    do.call(scclust::sc_clustering, sc_call)
+  },
+  error = function(x) {
+    new_error("** Error in sc_clustering: ", x$message, level = -5)
+  })
 
   if (break_large_blocks) {
-    out_blocking <- scclust::hierarchical_clustering(distances = distances,
-                                                     size_constraint = size_constraint,
-                                                     batch_assign = TRUE,
-                                                     existing_clustering = out_blocking)
+    out_blocking <- tryCatch({
+      scclust::hierarchical_clustering(distances = distances,
+                                       size_constraint = size_constraint,
+                                       batch_assign = TRUE,
+                                       existing_clustering = out_blocking)
+    },
+    error = function(x) {
+      new_error("** Error in hierarchical_clustering: ", x$message, level = -5)
+    })
   }
 
   class(out_blocking) <- c("qb_blocking", class(out_blocking))

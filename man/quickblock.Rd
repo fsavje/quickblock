@@ -60,6 +60,23 @@ In general, large blocks are produced when units are highly clustered,
 so breaking up large blocks will often only lead to small improvements. The
 blocks are broken using the \code{\link[scclust]{hierarchical_clustering}}
 function.
+
+\code{quickblock} calls \code{\link[scclust]{sc_clustering}} with
+\code{seed_method = "inwards_updating"}. The \code{seed_method} parameter
+governs how the seeds are selected in the nearest neighborhood graph that
+is used to construct the blocks (see \code{\link[scclust]{sc_clustering}}
+for details). The \code{"inwards_updating"} option generally works well
+and is safe with most datasets. Using \code{seed_method = "exclusion_updating"}
+often leads to better performance (in the sense of blocks with more
+similar units), but it may increase run time. Discrete data (or more generally
+when units tend to be at equal distance to many other units) will lead to
+particularly poor run time with this option. If the dataset has at least one
+continuous covariate, \code{"exclusion_updating"} is typically quick. A third
+option is \code{seed_method = "lexical"}, which decreases the run time relative
+to \code{"inwards_updating"} (sometimes considerably) at the cost of performance.
+\code{quickblock} passes parameters on to \code{\link[scclust]{sc_clustering}},
+so to change \code{seed_method}, call \code{quickblock} with the parameter
+specified as usual: \code{quickblock(..., seed_method = "exclusion_updating")}.
 }
 \examples{
 # Construct example data

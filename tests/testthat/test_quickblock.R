@@ -105,7 +105,7 @@ t_quickblock <- function(distances = distancesEucl,
 
 t_sc_clustering <- function(distances = distancesEucl,
                             size_constraint = 2L,
-                            seed_method = "exclusion_updating",
+                            seed_method = "inwards_updating",
                             primary_data_points = NULL,
                             primary_unassigned_method = "closest_seed",
                             secondary_unassigned_method = "ignore",
@@ -152,6 +152,24 @@ test_that("`quickblock` returns correct output", {
                    t_sc_clustering(size_constraint = 4L))
   expect_identical(t_quickblock(size_constraint = 4L, break_large_blocks = TRUE),
                    t_sc_clustering(size_constraint = 4L, break_large_blocks = TRUE))
+
+  expect_identical(t_quickblock(seed_method = "exclusion_updating"),
+                   t_sc_clustering(seed_method = "exclusion_updating"))
+  expect_identical(t_quickblock(break_large_blocks = TRUE, seed_method = "exclusion_updating"),
+                   t_sc_clustering(break_large_blocks = TRUE, seed_method = "exclusion_updating"))
+  expect_identical(t_quickblock(distances = distancesEucl, seed_method = "exclusion_updating"),
+                   t_sc_clustering(distances = distancesEucl, seed_method = "exclusion_updating"))
+  expect_identical(t_quickblock(distances = distancesMaha, seed_method = "exclusion_updating"),
+                   t_sc_clustering(distances = distancesMaha, seed_method = "exclusion_updating"))
+  expect_identical(t_quickblock(distances = raw_data, seed_method = "exclusion_updating"),
+                   t_sc_clustering(distances = distancesEucl, seed_method = "exclusion_updating"))
+  expect_identical(t_quickblock(distances = raw_data, normalize = "mahalanobize", seed_method = "exclusion_updating"),
+                   t_sc_clustering(distances = distancesMaha, seed_method = "exclusion_updating"))
+
+  expect_identical(t_quickblock(size_constraint = 4L, seed_method = "exclusion_updating"),
+                   t_sc_clustering(size_constraint = 4L, seed_method = "exclusion_updating"))
+  expect_identical(t_quickblock(size_constraint = 4L, break_large_blocks = TRUE, seed_method = "exclusion_updating"),
+                   t_sc_clustering(size_constraint = 4L, break_large_blocks = TRUE, seed_method = "exclusion_updating"))
 
   expect_identical(t_quickblock(caliper = 1.0),
                    t_sc_clustering(seed_radius = 0.5))
