@@ -16,7 +16,7 @@ Depends:
     R (>= 3.4.0),
     distances
 Imports:
-    scclust (>= 0.1.2.9000)
+    scclust (>= 0.2.0)
 Suggests:
     testthat
 NeedsCompilation: yes
