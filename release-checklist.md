@@ -1,7 +1,7 @@
 ## Submit release
 
 * Check and fix any errors at https://cran.r-project.org/web/checks/check_results_quickblock.html
-* Delete content of `NAMESPACE` and run `document()`
+* Delete content of `NAMESPACE` and run `devtools::document()`
 * Run `devtools::load_all(recompile = TRUE)`, `devtools::test()` and `devtools::check()`
 * Run `devtools::check_win_devel()`, `devtools::check_win_release()` and `devtools::check_win_oldrelease()`
 * Run `revdepcheck::revdep_check()`, remove "revdep" folder when done
