@@ -1,6 +1,3 @@
-# quickblock devel
-
-
 # quickblock 0.2.1
 
   * Use string literals when calling R internal function `error()` for error messaging.
