@@ -4,8 +4,13 @@
 \alias{quickblock}
 \title{Construct threshold blockings}
 \usage{
-quickblock(distances, size_constraint = 2L, caliper = NULL,
-  break_large_blocks = FALSE, ...)
+quickblock(
+  distances,
+  size_constraint = 2L,
+  caliper = NULL,
+  break_large_blocks = FALSE,
+  ...
+)
 }
 \arguments{
 \item{distances}{\code{\link[distances]{distances}} object or a numeric vector, matrix
