@@ -1,9 +1,6 @@
 # quickblock
 
 [![CRAN Status](https://www.r-pkg.org/badges/version/quickblock)](https://cran.r-project.org/package=quickblock)
-[![Build Status](https://travis-ci.org/fsavje/quickblock.svg?branch=master)](https://travis-ci.org/fsavje/quickblock)
-[![Build status](https://ci.appveyor.com/api/projects/status/kvewap50vohivud8/branch/master?svg=true)](https://ci.appveyor.com/project/fsavje/quickblock/branch/master)
-[![codecov](https://codecov.io/gh/fsavje/quickblock/branch/master/graph/badge.svg)](https://codecov.io/gh/fsavje/quickblock)
 
 `quickblock` provides functions for assigning treatments in randomized experiments using near-optimal threshold blocking. The package is made with large data sets in mind and derives blocks more than an order of magnitude quicker than other methods.
 
@@ -19,14 +16,14 @@ install.packages("quickblock")
 
 ## How to install development version
 
-It is recommended to use the stable CRAN version, but the latest development version can be installed directly from Github using [devtools](https://github.com/hadley/devtools):
+It is recommended to use the stable CRAN version, but the latest development version can be installed directly from Github using [devtools](https://github.com/r-lib/devtools):
 
 ```R
 if (!require("devtools")) install.packages("devtools")
 devtools::install_github("fsavje/quickblock")
 ```
 
-The package contains compiled code, and you must have a development environment to install the development version. (Use `devtools::has_devel()` to check whether you do.) If no development environment exists, Windows users download and install [Rtools](https://cran.r-project.org/bin/windows/Rtools/) and macOS users download and install [Xcode](https://itunes.apple.com/us/app/xcode/id497799835).
+The package contains compiled code, and you must have a development environment to install the development version. (Use `devtools::has_devel()` to check whether you do.) If no development environment exists, Windows users download and install [Rtools](https://cran.r-project.org/bin/windows/Rtools/) and macOS users download and install [Xcode](https://apps.apple.com/us/app/xcode/id497799835).
 
 
 ## Example on how to use quickblock
